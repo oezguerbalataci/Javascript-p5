@@ -52,7 +52,7 @@ function draw() {
 function keyPressed() {
   if (keyIsDown(32)) {
     var missile = new Missile(canon.x, canon.y);
-    missiles.push(missile);https://github.com/oezguerbalataci/Javascript-Learning
+    missiles.push(missile);
   }
 
   if (keyIsDown(37)) {
