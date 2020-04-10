@@ -10,9 +10,11 @@ function setup() {
   createCanvas(800, 600,);
   canon = new Ship;
   score = new Score;
-  for (var i = 0; i < 6; i++) {
-    aliens[i] = new Alien(i * 50 + 50, 50);
+
+   for (var i = 0; i < 6; i++) {
+     aliens[i] = new Alien(i * 50 + 50, 50);
   }
+  
   bg = loadImage('assets/bg.jpg');
 }
 
@@ -33,12 +35,11 @@ function draw() {
         }
 
         score.score += 5;
+        break
       }
     }
-    if (missiles.length != 0) {
-      if (missiles[i].y < 0) {
-        missiles.splice(i, 1);
-      }
+    if (missiles.length != 0 && missiles[i].y < 0) {
+      missiles.splice(i, 1);
     }
   }
   score.show();
@@ -75,11 +76,11 @@ function Missile(x, y) {
   this.y = y;
   this.r = 8
 
-  this.show = function () {
+  /*this.show = function () {
     fill(0);
     stroke(255, 0, 0);
     ellipse(this.x + 10, this.y, this.r, this.r * 2);
-  };
+  };*/
 
   this.hit = function (missile) {
     var d = dist(this.x, this.y, missile.x, missile.y);
@@ -89,9 +90,13 @@ function Missile(x, y) {
       return false;
     }
   };
-
+Missile.prototype.show = function(){
+  fill(0);
+  stroke(255, 0, 0);
+  ellipse(this.x , this.y, this.r, this.r * 2);
+}
   this.move = function () {
-    this.y = this.y - 5;
+    this.y = this.y - 3;
   };
 
 
@@ -100,15 +105,15 @@ function Missile(x, y) {
 function Alien(x, y) {
   this.x = x;
   this.y = y;
-  this.r = 27;
-  this.speed = 5;
+  this.r = 25;
+  this.speed = 3;
 
-  this.show = function () {
+  /*this.show = function () {
     image(alienImg, this.x, this.y);
     noStroke();
     noFill();
     ellipse(this.x, this.y, this.r * 2, this.r * 2);
-  };
+  };*/
 
   this.move = function () {
     this.x += this.speed;
@@ -121,6 +126,14 @@ function Alien(x, y) {
       this.y +=50;
     }
   };
+  
+}
+
+Alien.prototype.show = function(){
+  image(alienImg, this.x, this.y);
+    noStroke();
+    noFill();
+    ellipse(this.x, this.y, this.r * 2, this.r * 2);
 }
 
 function Ship() {
@@ -137,9 +150,21 @@ function Ship() {
 
 function Score() {
   this.score = 0;
-  this.show = function () {     
+  this.show = function () {    
+    stroke(1);
+    fill(0,255,0); 
     textSize(25);
     textAlign(RIGHT);
     text(this.score, 750, 30);
+  }
+}
+
+function gameUpdate(){
+  var sec = second();
+  if(sec % 5 == 0){
+    for (var i= 0; i<2 ; i++) {
+      var sa = new Alien(i * 50 + 50, 60);
+      aliens.push(sa);
+  }
   }
 }
