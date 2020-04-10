@@ -7,21 +7,20 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(800, 600,);
+  createCanvas(800, 600, );
   canon = new Ship;
   score = new Score;
 
-   for (var i = 0; i < 6; i++) {
-     aliens[i] = new Alien(i * 50 + 50, 50);
+  for (var i = 0; i < 6; i++) {
+    aliens[i] = new Alien(i * 50 + 50, 50);
   }
-  
+
   bg = loadImage('assets/bg.jpg');
 }
 
 function draw() {
   background(bg);
   canon.show();
-  
 
   for (var i = 0; i < missiles.length; i++) {
     missiles[i].show();
@@ -33,21 +32,19 @@ function draw() {
         if (aliens.length != 0) {
           aliens.splice(j, 1);
         }
-
         score.score += 5;
-        break
       }
     }
-    if (missiles.length != 0 && missiles[i].y < 0) {
-      missiles.splice(i, 1);
-    }
+  }
+  for (var i = 0; i < missiles.length; i++) {
+    if (missiles[i].y < 0) missiles.splice(i, 1);
   }
   score.show();
   for (var i = 0; i < aliens.length; i++) {
     aliens[i].show();
-    aliens[i].move();
+    //aliens[i].move();
   }
-  
+
 }
 
 function keyPressed() {
@@ -90,11 +87,11 @@ function Missile(x, y) {
       return false;
     }
   };
-Missile.prototype.show = function(){
-  fill(0);
-  stroke(255, 0, 0);
-  ellipse(this.x , this.y, this.r, this.r * 2);
-}
+  Missile.prototype.show = function () {
+    fill(0);
+    stroke(255, 0, 0);
+    ellipse(this.x, this.y, this.r, this.r * 2);
+  }
   this.move = function () {
     this.y = this.y - 3;
   };
@@ -119,28 +116,28 @@ function Alien(x, y) {
     this.x += this.speed;
     if (this.x > 750) {
       this.speed = this.speed * -1;
-      this.y +=50;
+      this.y += 50;
     }
     if (this.x < 0) {
       this.speed = this.speed * -1;
-      this.y +=50;
+      this.y += 50;
     }
   };
-  
+
 }
 
-Alien.prototype.show = function(){
-  image(alienImg, this.x, this.y);
-    noStroke();
-    noFill();
-    ellipse(this.x, this.y, this.r * 2, this.r * 2);
+Alien.prototype.show = function () {
+  image(alienImg, this.x - 27, this.y);
+  noStroke();
+  noFill();
+  ellipse(this.x, this.y, 50, 50);
 }
 
 function Ship() {
   this.x = 400;
   this.y = 550;
   this.show = function () {
-    image(img, this.x - 90, this.y);
+    image(img, this.x - 100, this.y);
     noStroke();
     noFill();
     rect(this.x, this.y, 50, 50);
@@ -150,21 +147,21 @@ function Ship() {
 
 function Score() {
   this.score = 0;
-  this.show = function () {    
+  this.show = function () {
     stroke(1);
-    fill(0,255,0); 
+    fill(0, 255, 0);
     textSize(25);
     textAlign(RIGHT);
     text(this.score, 750, 30);
   }
 }
 
-function gameUpdate(){
+function gameUpdate() {
   var sec = second();
-  if(sec % 5 == 0){
-    for (var i= 0; i<2 ; i++) {
+  if (sec % 5 == 0) {
+    for (var i = 0; i < 2; i++) {
       var sa = new Alien(i * 50 + 50, 60);
       aliens.push(sa);
-  }
+    }
   }
 }
