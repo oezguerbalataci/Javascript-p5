@@ -8,32 +8,33 @@ function preload() {
 }
 //setup function
 function setup() {
-  createCanvas(800, 600, );
+  createCanvas(800, 600 );
   canon = new Ship;
   score = new Score;
-  for (var i = 0; i < 10; i++) {
-    aliens[i] = new Alien(i * 50 +50, 50);
+  for (var i = 0; i < 5; i++) {
+    aliens[i] = new Alien(i * 50,0);
   }
+  createAlienByTime();
+  
   bg = loadImage('assets/bg.jpg');
 }
 //draw function
 function draw() {
   background(bg);
   canon.show();
-  if(aliens.length==5){
-    for (var i = 0; i < 20; i++) {
-      aliens[i] = new Alien(i * 50 +50, random(0, 100));
-    }
-  }
+  
 
   for (var i = 0; i < missiles.length; i++) {
     missiles[i].show();
     missiles[i].move();
     for (var j = 0; j < aliens.length; j++) {
         if(collusionDet(missiles[i],aliens[j])){
+          missiles.splice(i,1);
           aliens.splice(j,1);
-          score.score +=5;   
-        }
+          score.score +=5; 
+          break;
+          }  
+        
       }
     }
 
@@ -44,21 +45,38 @@ function draw() {
   for (var i = 0; i < aliens.length; i++) {
     aliens[i].show();
     aliens[i].move();
+    if(score.score % 20 == 0 && score.score != 0){
+      aliens[i].speed += 0.001;
+    }
   }
 
 }
+function createAlienByTime(){
+  setInterval(createAl,2200);
+  function createAl(){
+    for (var i = 0; i < 10; i++) {
+      alien = new Alien(i * 50,0);
+      aliens.push(alien);
+    }
+  }
+
+
+}
+
+
 //get key event 
 function keyPressed() {
+
   if (keyIsDown(32)) {
     var missile = new Missile(canon.x, canon.y);
     missiles.push(missile);
   }
 
   if (keyIsDown(37)) {
-    canon.x -= 20;
+    canon.x -= 10;
   }
   if (keyIsDown(39)) {
-    canon.x += 20;
+    canon.x += 10;
   }
   if (canon.x > 770) {
     canon.x = 770;
@@ -86,7 +104,7 @@ function Missile(x, y) {
   };*/
   
   this.move = function () {
-    this.y = this.y - 3;
+    this.y = this.y - 3 ;
   };
 
 }
@@ -99,7 +117,8 @@ function Alien(x, y) {
   this.y = y;
   this.width =44;
   this.height ==44;
-  this.speed = 3;
+  this.speed = 4;
+  
 
   this.move = function () {
     this.x += this.speed;
@@ -111,6 +130,7 @@ function Alien(x, y) {
       this.speed = this.speed * -1;
       this.y += 50;
     }
+
   };
 
 }
