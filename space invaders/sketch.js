@@ -25,7 +25,8 @@ function draw() {
     missiles[i].show();
     missiles[i].move();
     for (var j = 0; j < aliens.length; j++) {
-      if (collusionDet(missiles[i], aliens[j])) {
+       if(collideRectRect(missiles[i].x,missiles[i].y,16,16,aliens[j].x,aliens[j].y,42,4)){
+      // if (collusionDet(missiles[i], aliens[j])) {
         missiles.splice(i, 1);
         aliens.splice(j, 1);
         score.score += 5;
@@ -39,36 +40,12 @@ function draw() {
     if (missiles[i].y < 0) missiles.splice(i, 1);
   }
   for (var i = 0; i < aliens.length; i++) {
-    aliens[i].show();
-    //aliens[i].move();
-    if (score.score % 20 == 0 && score.score != 0) {
-      aliens[i].speed += 0.001;
-    }
+    aliens[i].show(aliens);
+    aliens[i].dir();
+    //if(aliens[0].x== 0)()
   }
+  alienMove();
   score.show();
-}
-
-//get key event 
-function keyPressed() {
-
-  if (keyIsDown(32)) {
-    var missile = new Missile(canon.x, canon.y);
-    missiles.push(missile);
-  }
-
-  if (keyIsDown(37)) {
-    canon.x -= 10;
-  }
-  if (keyIsDown(39)) {
-    canon.x += 10;
-  }
-  if (canon.x > 770) {
-    canon.x = 770;
-  }
-  if (canon.x < 0) {
-    canon.x = 0;
-  }
-
 }
 
 function collusionDet(missile, alien) {

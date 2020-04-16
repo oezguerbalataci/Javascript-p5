@@ -4,19 +4,15 @@ function Alien(x, y) {
     this.width =44;
     this.height ==44;
     this.speed = 4;
-    
-  
-    this.move = function () {
+
+    this.dir = function () {
       this.x += this.speed;
       if (this.x > 750) {
         this.speed = this.speed * -1;
-        this.y += 50;
       }
       if (this.x < 0) {
         this.speed = this.speed * -1;
-        this.y += 50;
-      }
-  
+      } 
     };
   
   }
